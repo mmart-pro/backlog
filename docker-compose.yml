@@ -1,0 +1,39 @@
+﻿version: "3.9"
+services:
+#  nginx:
+#    image: nginx:latest
+#    ports:
+#      - "80:80"
+#      - "443:443"
+#    container_name: backlog_proxy
+#    volumes:
+#      # Используем свой nginx конфиг, он заменит дефолтный в контейнере
+#      - ./nginx:/etc/nginx/conf.d
+#      # Монтируем папку с логами на хост машину для более удобного доступа
+#      #- ./logs:/var/log/nginx/
+
+  nuxt:
+    build: ./backlog-nuxt
+    container_name: backlog_app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+
+  api:
+    build: ./backlog
+    container_name: backlog_api
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+
+  db:
+    image: "mcr.microsoft.com/mssql/server:2019-latest"
+    container_name: backlog_db
+    ports:
+      - "1443:1433"
+    environment:
+      MSSQL_PID: Express
+      SA_PASSWORD: "Passw0rd99"
+      ACCEPT_EULA: "Y"

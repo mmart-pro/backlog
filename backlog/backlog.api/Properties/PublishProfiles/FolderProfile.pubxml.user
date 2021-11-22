@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_PublishTargetUrl>D:\Projects\backlog\backlog\backlog.api\bin\Release\net6.0\publish\</_PublishTargetUrl>
+    <History>True|2021-11-22T07:03:28.4442667Z;True|2021-11-22T10:01:11.1199799+03:00;True|2021-11-22T09:39:03.1784267+03:00;True|2021-11-19T21:37:34.4197792+03:00;True|2021-11-19T14:27:30.3843369+03:00;</History>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="DefaultConnection">
+      <Value>Server=db,1443%3b Database=backlog%3b MultipleActiveResultSets=true%3b Integrated Security=False%3b User ID=sa%3b Password=Passw0rd99%3bConnection Timeout=10%3b</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+  <ItemGroup>
+    <EFMigrations Include="backlog.api.Model.Context">
+      <Value>Server=db,1443%3b Database=backlog%3b MultipleActiveResultSets=true%3b Integrated Security=False%3b User ID=sa%3b Password=Passw0rd99%3bConnection Timeout=10%3b</Value>
+    </EFMigrations>
+  </ItemGroup>
+</Project>
