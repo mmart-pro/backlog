@@ -158,6 +158,7 @@ public class TodosController : ControllerBase
                 .Include(t => t.Priority)
                 .Include(t => t.Creator)
                 .Where(t => t.ProjectId == projectId)
+                .OrderByDescending(t => t.PriorityId).ThenBy(t => t.CreateTimeStamp)
                 .ToArray();
 
             _logger.LogDebug("Возвращаем пользователю {userId} список задач {count} шт", userId, todos.Length);
