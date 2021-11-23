@@ -43,6 +43,14 @@
 
       <v-card-actions>
         <v-btn
+          icon
+          color="primary"
+          @click="backClick"
+        >
+          <v-icon>mdi-keyboard-backspace</v-icon>
+        </v-btn>
+        <v-spacer />
+        <v-btn
           v-if="item.id > 0"
           icon
           color="red"
@@ -50,7 +58,6 @@
         >
           <v-icon>mdi-delete</v-icon>
         </v-btn>
-        <v-spacer />
         <v-btn
           icon
           color="green"
@@ -149,6 +156,10 @@ export default {
       }
       if (this.item.id > 0) this.update()
       else this.insert()
+    },
+
+    backClick() {
+      this.$router.go(-1)
     },
 
     async update() {
