@@ -96,7 +96,7 @@ export default {
           href: '/'
         },
         {
-          text: project.name + '!',
+          text: project.name,
           disabled: false,
           href: '/projects/' + project.id
         },
