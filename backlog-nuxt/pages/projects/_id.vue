@@ -1,6 +1,14 @@
 <template>
   <div>
-    <v-card>
+    <v-sheet rounded>
+      <v-breadcrumbs :items="path">
+        <template #divider>
+          <v-icon>mdi-chevron-right</v-icon>
+        </template>
+      </v-breadcrumbs>
+    </v-sheet>
+
+    <v-card class="mt-4">
       <v-card-title>
         <span>
           {{project.project.name}}
@@ -63,7 +71,21 @@ export default {
         projectId: params.id
       }
     })
-    return { project, todos }
+    return {
+      project,
+      todos,
+      path: [
+        {
+          text: 'Проекты',
+          disabled: false,
+          href: '/'
+        },
+        {
+          text: params.id > 0 ? project.project.name : 'Создание проекта',
+          disabled: true
+        }
+      ]
+    }
   },
 
   head: { title: 'Задачи по проекту' }
