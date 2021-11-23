@@ -42,7 +42,7 @@ public class UserProjectsController : ControllerBase
                 Project = new Project
                 {
                     CreateTimeStamp = DateTime.Now,
-                    Name = projectName
+                    Name = projectName.Trim()
                 },
                 UserId = userId,
                 UserRoleId = (int)EnumUserRoles.Owner
@@ -113,7 +113,7 @@ public class UserProjectsController : ControllerBase
                 .Include(up => up.Project)
                 .First(up => up.ProjectId == projectUpdateRequest.ProjectId && up.UserId == userId && up.UserRoleId == (int)EnumUserRoles.Owner)
                 .Project;
-            project.Name = projectUpdateRequest.Name;
+            project.Name = projectUpdateRequest.Name.Trim();
             _context.SaveChanges();
 
             _logger.LogDebug("Изменён проект {id} пользователем {userId}", project.Id, userId);

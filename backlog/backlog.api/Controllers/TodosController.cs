@@ -44,8 +44,8 @@ public class TodosController : ControllerBase
             var todo = new Todo
             {
                 ProjectId = todoCreateRequest.ProjectId,
-                Title = todoCreateRequest.Title,
-                Content = todoCreateRequest.Content,
+                Title = todoCreateRequest.Title.Trim(),
+                Content = todoCreateRequest.Content.Trim(),
                 PriorityId = todoCreateRequest.PriorityId,
                 CreateTimeStamp = DateTime.Now,
                 CreatorId = userId
@@ -120,8 +120,8 @@ public class TodosController : ControllerBase
                 .Any(t => t.ProjectId == todo.ProjectId && t.UserId == userId && t.UserRoleId != (int)EnumUserRoles.Reader))
                 throw new Exception("У Вас нет доступа к изменениям по проекту");
 
-            todo.Title = todoUpdateRequest.Title;
-            todo.Content= todoUpdateRequest.Content;
+            todo.Title = todoUpdateRequest.Title.Trim();
+            todo.Content = todoUpdateRequest.Content.Trim();
             todo.PriorityId = todoUpdateRequest.PriorityId;
 
             _context.SaveChanges();
@@ -155,8 +155,8 @@ public class TodosController : ControllerBase
                 return StatusCode(StatusCodes.Status403Forbidden, "У Вас нет доступа к проекту");
 
             var todos = _context.Todos
-                .Include(t=>t.Priority)
-                .Include(t=>t.Creator)
+                .Include(t => t.Priority)
+                .Include(t => t.Creator)
                 .Where(t => t.ProjectId == projectId)
                 .ToArray();
 
@@ -187,6 +187,7 @@ public class TodosController : ControllerBase
             var userId = this.CurrentUserId();
             var todo = _context.Todos
                 .Include(t => t.Creator)
+                .Include(t => t.Project)
                 .First(t => t.Id == todoId);
             if (!_context.UserProjects.Any(u => u.UserId == userId && u.ProjectId == todo.ProjectId))
                 return StatusCode(StatusCodes.Status403Forbidden, "У Вас нет доступа к проекту");

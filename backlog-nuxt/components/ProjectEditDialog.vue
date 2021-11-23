@@ -100,7 +100,7 @@ export default {
   validations() {
     return {
       project: {
-        name: { required, minLength: minLength(6), maxLength: maxLength(30) }
+        name: { required, minLength: minLength(2), maxLength: maxLength(30) }
       }
     }
   },

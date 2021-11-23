@@ -1,56 +1,66 @@
 <template>
-  <v-card class="mt-4">
-    <v-card-title>
-      <v-text-field
-        v-model="item.title"
-        :error-messages="objectErrors($v.item.title)"
-        :counter="$v.item.title.$params.maxLength.max"
-        autocomplete="off"
-        label="Краткое описание задачи"
-        @input="$v.item.title.$touch()"
-        @blur="$v.item.title.$touch()"
-      />
-    </v-card-title>
+  <div>
+    <v-sheet rounded>
+      <v-breadcrumbs :items="path">
+        <template #divider>
+          <v-icon>mdi-chevron-right</v-icon>
+        </template>
+      </v-breadcrumbs>
+    </v-sheet>
 
-    <v-card-subtitle v-if="item.id > 0">
-      <span>{{item.creator.name}}</span>
-      <v-spacer />
-      <span>Создана {{item.createTimeStamp | dateTimeFormat}}</span>
-    </v-card-subtitle>
+    <v-card class="mt-4">
+      <v-card-title>
+        <v-text-field
+          v-model="item.title"
+          :error-messages="objectErrors($v.item.title)"
+          :counter="$v.item.title.$params.maxLength.max"
+          autocomplete="off"
+          label="Краткое описание задачи"
+          @input="$v.item.title.$touch()"
+          @blur="$v.item.title.$touch()"
+        />
+      </v-card-title>
 
-    <v-card-text>
-      <PrioritySelector v-model="item.priorityId" />
+      <v-card-subtitle v-if="item.id > 0">
+        <span>{{item.creator.name}}</span>
+        <v-spacer />
+        <span>Создана {{item.createTimeStamp | dateTimeFormat}}</span>
+      </v-card-subtitle>
 
-      <v-textarea
-        v-model="item.content"
-        filled
-        label="Пояснения по задаче"
-        :error-messages="objectErrors($v.item.content)"
-        :counter="$v.item.content.$params.maxLength.max"
-        @input="$v.item.content.$touch()"
-        @blur="$v.item.content.$touch()"
-      />
-    </v-card-text>
+      <v-card-text>
+        <PrioritySelector v-model="item.priorityId" />
 
-    <v-card-actions>
-      <v-btn
-        v-if="item.id > 0"
-        icon
-        color="red"
-        @click="deleteClick"
-      >
-        <v-icon>mdi-delete</v-icon>
-      </v-btn>
-      <v-spacer />
-      <v-btn
-        icon
-        color="green"
-        @click="saveClick"
-      >
-        <v-icon>mdi-check</v-icon>
-      </v-btn>
-    </v-card-actions>
-  </v-card>
+        <v-textarea
+          v-model="item.content"
+          filled
+          label="Пояснения по задаче"
+          :error-messages="objectErrors($v.item.content)"
+          :counter="$v.item.content.$params.maxLength.max"
+          @input="$v.item.content.$touch()"
+          @blur="$v.item.content.$touch()"
+        />
+      </v-card-text>
+
+      <v-card-actions>
+        <v-btn
+          v-if="item.id > 0"
+          icon
+          color="red"
+          @click="deleteClick"
+        >
+          <v-icon>mdi-delete</v-icon>
+        </v-btn>
+        <v-spacer />
+        <v-btn
+          icon
+          color="green"
+          @click="saveClick"
+        >
+          <v-icon>mdi-check</v-icon>
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </div>
 </template>
 
 <script>
@@ -61,7 +71,7 @@ export default {
     return /^\d+$/.test(params.id)
   },
 
-  async asyncData({ $axios, params }) {
+  async asyncData({ $axios, params, query }) {
     const item =
       params.id > 0
         ? await $axios.$get('/todos/' + params.id)
@@ -71,7 +81,31 @@ export default {
             content: '',
             priorityId: 100
           }
-    return { item }
+
+    const project =
+      params.id > 0
+        ? item.project
+        : (await $axios.$get('/userProjects/' + query.projectId)).project
+
+    return {
+      item,
+      path: [
+        {
+          text: 'Проекты',
+          disabled: false,
+          href: '/'
+        },
+        {
+          text: project.name + '!',
+          disabled: false,
+          href: '/projects/' + project.id
+        },
+        {
+          text: params.id > 0 ? item.title : 'Создание задачи',
+          disabled: true
+        }
+      ]
+    }
   },
 
   head: { title: 'Задача' },
@@ -79,10 +113,8 @@ export default {
   validations() {
     return {
       item: {
-        title: { required, minLength: minLength(6), maxLength: maxLength(120) },
+        title: { required, minLength: minLength(3), maxLength: maxLength(120) },
         content: {
-          required,
-          minLength: minLength(6),
           maxLength: maxLength(1000)
         }
       }
