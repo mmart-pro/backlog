@@ -9,7 +9,17 @@
     :error-messages="errorMessages"
     @input="onSelectedChanged"
     @blur="onBlur"
-  ></v-select>
+  >
+    <template #selection="{ item }">
+      <PriorityItem
+        :priority="item"
+        class="my-1"
+      />
+    </template>
+    <template #item="{ item }">
+      <PriorityItem :priority="item" />
+    </template>
+  </v-select>
 </template>
 
 <script>
