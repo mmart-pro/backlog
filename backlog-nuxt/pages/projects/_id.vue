@@ -29,7 +29,7 @@
       >
         <Todo
           :title="todo.title"
-          :priority="todo.priority.name"
+          :priority="todo.priority"
           :author="todo.creator.name"
           :create-time-stamp="todo.createTimeStamp"
         />
