@@ -21,19 +21,30 @@
         />
       </v-card-title>
 
-      <v-card-subtitle v-if="item.id > 0">
-        <span>{{item.creator.name}}</span>
-        <v-spacer />
-        <span>Создана {{item.createTimeStamp | dateTimeFormat}}</span>
-      </v-card-subtitle>
-
       <v-card-text>
-        <PrioritySelector v-model="item.priorityId" />
+        <v-row>
+          <v-col>
+            <PrioritySelector
+              v-model="item.priorityId"
+              class="d-inline-block"
+            />
+          </v-col>
+          <v-col
+            v-if="item.id > 0"
+            class="subtitle-2 mt-2"
+            align="end"
+          >
+            <span>{{item.creator.name}}</span>
+            <v-spacer />
+            <span>{{item.createTimeStamp | dateTimeFormat}}</span>
+          </v-col>
+        </v-row>
 
         <v-textarea
           v-model="item.content"
           filled
           label="Пояснения по задаче"
+          rows="10"
           :error-messages="objectErrors($v.item.content)"
           :counter="$v.item.content.$params.maxLength.max"
           @input="$v.item.content.$touch()"
