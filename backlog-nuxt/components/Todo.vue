@@ -5,8 +5,8 @@
         <v-card-title>
           <div class="text-truncate">{{title}}</div>
         </v-card-title>
-        <v-card-subtitle v-if="preview">
-          <div class="text-truncate">{{preview}}</div>
+        <v-card-subtitle>
+          <div class="text-truncate">{{preview}}&nbsp;</div>
         </v-card-subtitle>
       </v-sheet>
       <v-sheet
