@@ -2,6 +2,7 @@
   <v-chip
     style="cursor: pointer;"
     :color="color"
+    small
   >{{priority.name}}</v-chip>
 </template>
 
